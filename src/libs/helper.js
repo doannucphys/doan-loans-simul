@@ -451,7 +451,7 @@ export const updateExistData = (transArr, fromIdx, lastBalance) => {
                 interest,
                 capital,
                 balance: toFixed2(balance),
-                orderNb: idx +1,
+                orderNb: Number(idx) + 1,
                 date: trans.date
             })
             Object.assign(tempRecord, trans)
