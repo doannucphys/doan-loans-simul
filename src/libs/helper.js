@@ -329,6 +329,21 @@ export const genTrans = ({ intRate = 0.29, freq = '1w', fees = 0, totalsSeqNb = 
             )
         }
     }
+    trans.push(
+        Object.assign({}, commonData, {
+            _id: idx,
+            orderNb: idx,
+            date: 0,
+            freq,
+            installAmount: 25, 
+            setupAmount: 25,
+            interest: 0,
+            capital: 0,
+            fees,
+            balance: 0,
+            status: "differ"
+        })
+    )
     return trans
 }
 
@@ -419,7 +434,7 @@ export const initData = (freq, nb, amt, fees, firstDate, secondDate, startPayDat
         firstDate,
         secondDate,
         startPayDate,
-        totalsSeqNb: nb + 1,
+        totalsSeqNb: nb + 2,
         province,
     })
     return updateDateToTrans(transArr, dateArr)
@@ -458,7 +473,8 @@ export const updateExistData = (transArr, fromIdx, lastBalance) => {
         }
         idx++
     }
-    return transArr.slice(0, idx)
+    // return transArr.slice(0, idx)
+    return transArr
 }
 
 const insertRecord = (transArr, idx, newRecord) => {
