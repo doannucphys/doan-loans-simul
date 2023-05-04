@@ -331,8 +331,8 @@ export const genTrans = ({ intRate = 0.29, freq = '1w', fees = 0, totalsSeqNb = 
     }
     trans.push(
         Object.assign({}, commonData, {
-            _id: idx,
-            orderNb: idx,
+            _id: idx+1,
+            orderNb: idx+1,
             date: 0,
             freq,
             installAmount: 25, 
@@ -445,6 +445,7 @@ export const initData = (freq, nb, amt, fees, firstDate, secondDate, startPayDat
 export const updateExistData = (transArr, fromIdx, lastBalance) => {
     let balance = Number(lastBalance)
     let idx = fromIdx;
+
     let tempRecord = {} // user for the case of new record, just get info from last valid record 
     while (toFixed2(balance) > 0) {
         let trans = transArr[idx];
@@ -473,8 +474,13 @@ export const updateExistData = (transArr, fromIdx, lastBalance) => {
         }
         idx++
     }
-    // return transArr.slice(0, idx)
-    return transArr
+    let updateArr = transArr.slice(0, idx)
+    
+    // last difer
+    let diferArr = transArr.filter((e,i) => i >= idx && !toFixed2(e.interest) && !toFixed2(e.capital) && !toFixed2(e.balance))
+    diferArr.forEach((e,i) => e.orderNb = i + idx + 1)
+    
+    return updateArr.concat(diferArr)
 }
 
 const insertRecord = (transArr, idx, newRecord) => {
